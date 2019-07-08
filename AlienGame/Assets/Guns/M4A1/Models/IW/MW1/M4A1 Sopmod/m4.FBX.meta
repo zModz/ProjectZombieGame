@@ -1,0 +1,447 @@
+fileFormatVersion: 2
+guid: ee49f93bf4cb49a4891c899b5bed17ac
+ModelImporter:
+  serializedVersion: 25
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: a_charger
+  - first:
+      1: 100002
+    second: a_clip
+  - first:
+      1: 100004
+    second: a_cover
+  - first:
+      1: 100006
+    second: a_flap
+  - first:
+      1: 100008
+    second: a_m4
+  - first:
+      1: 100010
+    second: a_silencer
+  - first:
+      1: 100012
+    second: a_trigger
+  - first:
+      1: 100014
+    second: L_Armdummy
+  - first:
+      1: 100016
+    second: L_Forearm
+  - first:
+      1: 100018
+    second: L_Index1
+  - first:
+      1: 100020
+    second: L_Index2
+  - first:
+      1: 100022
+    second: L_Index3
+  - first:
+      1: 100024
+    second: L_Mid1
+  - first:
+      1: 100026
+    second: L_Mid2
+  - first:
+      1: 100028
+    second: L_Mid3
+  - first:
+      1: 100030
+    second: L_Pinky1
+  - first:
+      1: 100032
+    second: L_Pinky2
+  - first:
+      1: 100034
+    second: L_Pinky3
+  - first:
+      1: 100036
+    second: L_Ring1
+  - first:
+      1: 100038
+    second: L_Ring2
+  - first:
+      1: 100040
+    second: L_Ring3
+  - first:
+      1: 100042
+    second: L_Thumb1
+  - first:
+      1: 100044
+    second: L_Thumb2
+  - first:
+      1: 100046
+    second: L_Thumb3
+  - first:
+      1: 100048
+    second: L_Upperarm
+  - first:
+      1: 100050
+    second: L_Wrist
+  - first:
+      1: 100052
+    second: //RootNode
+  - first:
+      1: 100054
+    second: R_Armdummy
+  - first:
+      1: 100056
+    second: R_Forearm
+  - first:
+      1: 100058
+    second: R_Index1
+  - first:
+      1: 100060
+    second: R_Index2
+  - first:
+      1: 100062
+    second: R_Index3
+  - first:
+      1: 100064
+    second: R_Mid1
+  - first:
+      1: 100066
+    second: R_Mid2
+  - first:
+      1: 100068
+    second: R_Mid3
+  - first:
+      1: 100070
+    second: R_Pinky1
+  - first:
+      1: 100072
+    second: R_Pinky2
+  - first:
+      1: 100074
+    second: R_Pinky3
+  - first:
+      1: 100076
+    second: R_Ring1
+  - first:
+      1: 100078
+    second: R_Ring2
+  - first:
+      1: 100080
+    second: R_Ring3
+  - first:
+      1: 100082
+    second: R_Thumb1
+  - first:
+      1: 100084
+    second: R_Thumb2
+  - first:
+      1: 100086
+    second: R_Thumb3
+  - first:
+      1: 100088
+    second: R_Upperarm
+  - first:
+      1: 100090
+    second: R_Wrist
+  - first:
+      1: 100092
+    second: SMDImport
+  - first:
+      4: 400000
+    second: a_charger
+  - first:
+      4: 400002
+    second: a_clip
+  - first:
+      4: 400004
+    second: a_cover
+  - first:
+      4: 400006
+    second: a_flap
+  - first:
+      4: 400008
+    second: a_m4
+  - first:
+      4: 400010
+    second: a_silencer
+  - first:
+      4: 400012
+    second: a_trigger
+  - first:
+      4: 400014
+    second: L_Armdummy
+  - first:
+      4: 400016
+    second: L_Forearm
+  - first:
+      4: 400018
+    second: L_Index1
+  - first:
+      4: 400020
+    second: L_Index2
+  - first:
+      4: 400022
+    second: L_Index3
+  - first:
+      4: 400024
+    second: L_Mid1
+  - first:
+      4: 400026
+    second: L_Mid2
+  - first:
+      4: 400028
+    second: L_Mid3
+  - first:
+      4: 400030
+    second: L_Pinky1
+  - first:
+      4: 400032
+    second: L_Pinky2
+  - first:
+      4: 400034
+    second: L_Pinky3
+  - first:
+      4: 400036
+    second: L_Ring1
+  - first:
+      4: 400038
+    second: L_Ring2
+  - first:
+      4: 400040
+    second: L_Ring3
+  - first:
+      4: 400042
+    second: L_Thumb1
+  - first:
+      4: 400044
+    second: L_Thumb2
+  - first:
+      4: 400046
+    second: L_Thumb3
+  - first:
+      4: 400048
+    second: L_Upperarm
+  - first:
+      4: 400050
+    second: L_Wrist
+  - first:
+      4: 400052
+    second: //RootNode
+  - first:
+      4: 400054
+    second: R_Armdummy
+  - first:
+      4: 400056
+    second: R_Forearm
+  - first:
+      4: 400058
+    second: R_Index1
+  - first:
+      4: 400060
+    second: R_Index2
+  - first:
+      4: 400062
+    second: R_Index3
+  - first:
+      4: 400064
+    second: R_Mid1
+  - first:
+      4: 400066
+    second: R_Mid2
+  - first:
+      4: 400068
+    second: R_Mid3
+  - first:
+      4: 400070
+    second: R_Pinky1
+  - first:
+      4: 400072
+    second: R_Pinky2
+  - first:
+      4: 400074
+    second: R_Pinky3
+  - first:
+      4: 400076
+    second: R_Ring1
+  - first:
+      4: 400078
+    second: R_Ring2
+  - first:
+      4: 400080
+    second: R_Ring3
+  - first:
+      4: 400082
+    second: R_Thumb1
+  - first:
+      4: 400084
+    second: R_Thumb2
+  - first:
+      4: 400086
+    second: R_Thumb3
+  - first:
+      4: 400088
+    second: R_Upperarm
+  - first:
+      4: 400090
+    second: R_Wrist
+  - first:
+      4: 400092
+    second: SMDImport
+  - first:
+      43: 4300000
+    second: SMDImport
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      111: 11100000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: SMDImport
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #36'
+    second: {fileID: 2100000, guid: df038e570e1b09d4daf3faf218a32ab5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #37'
+    second: {fileID: 2100000, guid: 7ea5d714bc30b5a4bb8078bea1c2a399, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #38'
+    second: {fileID: 2100000, guid: 9236dbadc257779458a54a4c419ae1dc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #39'
+    second: {fileID: 2100000, guid: a8d87d34aad16704d88d8e6a7eccd416, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #40'
+    second: {fileID: 2100000, guid: b0da531529b0c544482bca65f9319bac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #41'
+    second: {fileID: 2100000, guid: f90cb6c26234f7a40aca1eec2e5e83d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #42'
+    second: {fileID: 2100000, guid: 9a370ec3444379845a48985006ac60bb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #43'
+    second: {fileID: 2100000, guid: c27a34fba0bfa4c4a80f22fa2a6684aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #44'
+    second: {fileID: 2100000, guid: c602d8bf104e0144b90c6e7d617ba7d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #45'
+    second: {fileID: 2100000, guid: 56810c108104b624b852db16462eddc5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #46'
+    second: {fileID: 2100000, guid: 71947cb5dda02b54bbca60ec14bbd2d9, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips:
+  - a13c5a77f74184c43b370388756d2071
+  - c58cca70d8e5a18488ba2af50941e736
+  - 910c2c28525e1944693e7b44d4e7825b
+  - 5a99d3b5f9cc0314cb6155437ac837dd
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 0.01
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
