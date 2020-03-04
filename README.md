@@ -6,7 +6,7 @@ Right now it’s still unclear what I want to do as enemies, right now the gener
 _**Normal**_ – Zombies that show up in every round, they are weaker but sometimes they run  
 _**(TBD)Tank**_ – Zombie that shows up every 10 rounds, they take a while to kill and can damage you pretty bad but they are slow
 
-# Maps
+## Maps
 **SpaceStation**   
 “After the accident, the station turned into this dark and abandoned place with broken equipment and filled with blood.” 
 The playable area will divided in sections: Spawn, Labs, Rooms, Containment Room and the Main Lab, the Main Lab being the area where the accident happen, Containment Room is an area with containment chambers (how original), and the Spawn is an area full of computers and equipment, the room before it being the landing area. (tip: in the original draft, the map looked like “Kino Der Toten” from Call of Duty: Black Ops)
@@ -20,7 +20,7 @@ TBD
 **ControlCenter**  
 TBD
 
-# Gameplay
+## Gameplay
 The movement system is smooth and responsive, something similar with recent shooters. It will also have a down system, meaning when your health is low, your character will fall to the ground for a couple seconds before coming back up, this will also only happen once.
 While in-game, you’ll be able to gain points by doing damage to enemies, with these points you’ll be able to open doors to expand your play area and also buy weapons.
 Buying weapons is an important system in the game and there are two ways to do this:  
