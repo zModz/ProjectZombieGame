@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class Player_Movement : MonoBehaviour
 {
-    Gamepad gp1;
-    public string GP_Name;
+    public PlayerInput playerInput;
+    private InputActionAsset asset;
 
     [Header("Player Atributtes")]
     public bool isInverted;
@@ -20,13 +20,18 @@ public class Player_Movement : MonoBehaviour
     public int runMulti;
     public int m_Rspeed;
     public float jumpHeight;
+    public Transform groundCheck;
+    public LayerMask groundMask;
+    float groundDistance = 0.4f;
     float fallMulti = 2.5f;
     float lowMulti = 2f;
     Rigidbody rb;
+    public bool isGrounded;
     public bool canJump;
     public bool isMoving;
     public bool isRunning;
     Collider[] childrenColliders;
+    Vector3 velocity;
 
     [Header("Camera Atributtes")]
     public GameObject cam;
@@ -63,13 +68,6 @@ public class Player_Movement : MonoBehaviour
     float CrouchPos;
     float PronePos;
 
-    public void _Gamepad()
-    {
-        gp1 = Gamepad.current;
-        if (gp1 == null)
-            return;
-    }
-
     private void Awake()
     {
         Char = GetComponent<CharacterController>();
@@ -81,6 +79,7 @@ public class Player_Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         childrenColliders = GetComponentsInChildren<Collider>();
+        playerInput = GetComponent<PlayerInput>();
         m_Rspeed = m_speed * runMulti;
         _m_speed = m_speed;
 
@@ -118,50 +117,42 @@ public class Player_Movement : MonoBehaviour
     {
         CamMove();
         Movement();
-
     }
 
     #region PlayerInput
     public void Movement()
     {
-        _Gamepad();
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        //Keyboard
-        Vector3 move = new Vector3();
+        if(isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
 
-        if (Keyboard.current.wKey.isPressed) { move.z += 1; }
-        if (Keyboard.current.aKey.isPressed) { move.x -= 1; }
-        if (Keyboard.current.sKey.isPressed) { move.z -= 1; isRunning = false; }
-        if (Keyboard.current.dKey.isPressed) { move.x += 1; }
+        //Movement
+        Vector2 input = playerInput.actions["Move"].ReadValue<Vector2>();
+        Vector3 move = transform.right * input.x + transform.forward * input.y;
+        Char.Move(move * m_speed * Time.deltaTime);
 
-        move.Normalize();
+        //Jump
+        if (playerInput.actions["Jump"].triggered && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * -9.81f);
+        }
 
-        transform.Translate(move * m_speed * Time.deltaTime);
-
-        //Gamepad
-        Vector3 gp_move = new Vector3();
-
-        Vector2 gp = gp1.leftStick.ReadValue();
-        gp_move.x += gp.x;
-        gp_move.z += gp.y;
-
-        gp_move.Normalize();
-
-        transform.Translate(gp_move * m_speed * Time.deltaTime);
-
-
-
-
+        //Gravity
+        velocity.y += -9.81f * Time.deltaTime;
+        Char.Move(velocity * Time.deltaTime);
 
         //Sprint
         if (move.z > 0)
         {
-            if (Keyboard.current.leftShiftKey.wasPressedThisFrame || gp1.leftStickButton.wasPressedThisFrame && isCrouching == false && isProne == false)
+            if (Keyboard.current.leftShiftKey.wasPressedThisFrame /*|| gp1.leftStickButton.wasPressedThisFrame*/ && isCrouching == false && isProne == false)
             {
                 m_speed = m_Rspeed;
                 isRunning = true;
             }
-            else if (Keyboard.current.leftShiftKey.wasReleasedThisFrame || gp1.leftStickButton.wasReleasedThisFrame)
+            else if (Keyboard.current.leftShiftKey.wasReleasedThisFrame /*|| gp1.leftStickButton.wasReleasedThisFrame*/)
             {
                 m_speed = _m_speed;
                 isRunning = false;
@@ -169,11 +160,8 @@ public class Player_Movement : MonoBehaviour
         }
 
         Stances();
-        if (Keyboard.current.spaceKey.wasPressedThisFrame || gp1.buttonSouth.wasPressedThisFrame)
-        {
-            rb.velocity = Vector3.up * jumpHeight;
-        }
-        Jump();
+
+        //Jump();
 
         if (move.z > 0 || move.z < 0 || move.x > 0 || move.x < 0)
         {
@@ -237,59 +225,38 @@ public class Player_Movement : MonoBehaviour
 
     public void CamMove()
     {
-        _Gamepad();
+        if (Time.deltaTime == 0) { return; }
+        
+        Vector2 camInput = playerInput.actions["Look"].ReadValue<Vector2>();
 
-        //Cam Movement //Keyaboard
+        //Cam Movement //Keyboard
         if (!isInverted)
         {
-            var h = Input.GetAxis("Mouse X") * cam_sens_x;
-            v += Input.GetAxis("Mouse Y") * -cam_sens_y;
-            transform.Rotate(0, h, 0);
+            var h = camInput.x * cam_sens_x * Time.deltaTime;
+            v += camInput.y * -cam_sens_y * Time.deltaTime;
 
-            v = Mathf.Clamp(v, -90, 75);
-            cam.transform.eulerAngles = new Vector3(v, cam.transform.eulerAngles.y, cam.transform.eulerAngles.z);
+            //Rotate player with mouse input
+            transform.Rotate(Vector3.up * h);
+
+            //Rotate camera on the Y axis
+            float xRotation = 0f; 
+            xRotation += v;
+            xRotation = Mathf.Clamp(v, -90, 90);
+            cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         }
         else
         {
-            var h = Input.GetAxis("Mouse X") * -cam_sens_x;
-            v += Input.GetAxis("Mouse Y") * cam_sens_y;
-            transform.Rotate(0, h, 0);
+            var h = camInput.x * -cam_sens_x * Time.deltaTime;
+            v += camInput.y * cam_sens_y * Time.deltaTime;
 
-            v = Mathf.Clamp(v, -90, 75);
-            cam.transform.eulerAngles = new Vector3(v, cam.transform.eulerAngles.y, cam.transform.eulerAngles.z);
-        }
+            //Rotate player with mouse input
+            transform.Rotate(Vector3.up * h);
 
-        //Cam Movement //Gamepad
-        Vector2 gpcam = gp1.rightStick.ReadValue();
-        if (!isInverted)
-        {
-            var h = gpcam.x * cam_sens_x;
-            v += gpcam.y * -cam_sens_y;
-            transform.Rotate(0, h, 0);
-
-            v = Mathf.Clamp(v, -90, 75);
-            cam.transform.eulerAngles = new Vector3(v, cam.transform.eulerAngles.y, cam.transform.eulerAngles.z);
-        }
-        else
-        {
-            var h = gpcam.x * -cam_sens_x;
-            v += gpcam.y * cam_sens_y;
-            transform.Rotate(0, h, 0);
-
-            v = Mathf.Clamp(v, -90, 75);
-            cam.transform.eulerAngles = new Vector3(v, cam.transform.eulerAngles.y, cam.transform.eulerAngles.z);
-        }
-    }
-
-    void Jump()
-    {
-        if (rb.velocity.y < 0)
-        {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMulti - 1) * Time.deltaTime;
-        }
-        else if (rb.velocity.y > 0 && !Keyboard.current.spaceKey.wasPressedThisFrame || !gp1.buttonSouth.wasPressedThisFrame)
-        {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMulti - 1) * Time.deltaTime;
+            //Rotate camera on the Y axis
+            float xRotation = 0f;
+            xRotation -= v;
+            xRotation = Mathf.Clamp(v, -90, 90);
+            cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         }
     }
 
@@ -327,4 +294,7 @@ public class Player_Movement : MonoBehaviour
         }
     }
     #endregion
+
+
+
 }

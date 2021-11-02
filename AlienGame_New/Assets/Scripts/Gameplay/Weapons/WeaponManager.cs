@@ -1,28 +1,64 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
-public class weapons
+public struct WeaponSettings
 {
-    [Header("Basic")]
     public string name;
-    public Sprite WeaponIcon_UI;
-    public GameObject GO;
+
+    [Header("Basic")]
+    public int WeaponIndex;
+    public string WeaponName;
+    public Sprite WeaponIconUI;
+    //public GameObject Wpn_GO;
+    //public GameObject Arms_GO;
     public WeaponBase WpnBase;
     public enum WeaponType { Assault, SMG, LMG, Sniper, Shotgun, Pistol, Melee, Launcher }
     public WeaponType weaponType;
     public enum WeaponFireMode { Auto, Semi, Burst, Melee }
     public WeaponFireMode fireMode;
 
+    //Weapon Atributes
+    [Header("Weapon Atributes")]
+    public AudioSource audio;
+    public AudioClip fireSound;
+    public AudioClip reloadSound;
+    public float SwayAmount;
+    public float SwaySmoothAmount;
+    public float SwayMaxAmount;
+    public Vector3 adsPos;
+
+    [Header("Weapon Stats")]
+    public int bulletPerMag;
+    public int maxAmmo;
+    public float ReloadTime;
+    public int damage;
+    public float ADSSpeed;
+    public float rangeMeters;
+    [Tooltip("<1 = Fast, >1 = Slow")]
+    public float fireRate;
+    [Header("Recoil")]
+    [Tooltip("<1 = More Accurate, >1 = Less Accurate")]
+    public float normalSpread;
+    //public float InicialSpread;
+
+    [Header("Other Effects")]
+    public GameObject crosshair;
+    public GameObject bulletHole;
+    public GameObject muzzleFlash;
+
     [Header("Buyable")]
     public bool isBuyable;
-    public Sprite WeaponIcon_buy;
-    public int pointsToBuy;
+    public Sprite WeaponIconBuy;
     public int pointsToBuyAmmo;
+    public int pointsToBuy;
 }
 
-public class WeaponManager : MonoBehaviour
+[CreateAssetMenu(menuName = "WeaponSettings")]
+public class WeaponManager : ScriptableObject
 {
-    public weapons[] WeaponList = new weapons[3];
+    [SerializeField]
+    public WeaponSettings[] weaponList = new WeaponSettings[15];
 }

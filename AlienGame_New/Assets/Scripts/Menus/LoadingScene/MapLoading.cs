@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MapLoading : MonoBehaviour
 {
     public GameObject MapManagerGO;
-    MapManager MapManager;
+    GameManager MapManager;
     
     public int MapIndex;
 
@@ -16,7 +16,7 @@ public class MapLoading : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MapManager = MapManagerGO.GetComponent<MapManager>();
+        MapManager = MapManagerGO.GetComponent<GameManager>();
         StartCoroutine(LoadScene());
     }
 

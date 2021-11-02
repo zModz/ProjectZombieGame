@@ -2,123 +2,101 @@
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.InputSystem.Interactions;
+using TMPro;
 
 public class WeaponBase : MonoBehaviour
 {
-    public WeaponManager Weapons;
-    public Player_Script Player;
-
-    AlienGame_New controls;
-
-    //Weapon Atributes
-    [Header("Weapon Atributes")]
-    public int WeaponIndex;
-    public Text WeaponNameText;
-    public Text BulletsText;
-    new AudioSource audio;
-    public AudioClip firesound;
-    public AudioClip reloadsound;
-    public Transform shootPoint;
-    float Sway_Amount;
-    float Sway_smoothAmount;
-    float Sway_maxAmount;
-    [SerializeField]
+    int currentBullets;
+    int bulletsLeft;
+    float fireTimer;
     Vector3 originalPos;
-    public Vector3 adsPos;
+    Quaternion originalRot;
+    float rangeUnit;
+    GameObject go;
+ 
+    [Header("Weapon Settings")]
+    public int wpn_index;
+    public WeaponManager Manager;
+    WeaponSettings Weapons;
+    public Player_Script Player;
+    public Player_Movement plymove;
     [SerializeField]
     bool IsReloading = false;
 
-    [HideInInspector]
-    public int currentBullets;
-    [Header("Weapon Stats")]
-    public int bulletPerMag = 30;
-    public int bulletsLeft;
-    public int maxAmmo = 120;
-    public float ReloadTime;
-    public int damage;
-    public float ADSSpeed;
-    public float rangeMeters = 10;
-    [SerializeField]
-    float rangeUnit;
-    float fireTimer;
-    public float fireRate = 0.1f;
-    [Header("Recoil")]
-    public float normalSpread = 0.04f;
-    float InicialSpread;
+    [Header("UI")]
+    public TextMeshProUGUI WeaponNameText;
+    public TextMeshProUGUI BulletsText;
+    public Transform shootPoint;
 
-    [Header("Other Effects")]
-    public GameObject crosshair;
-    public GameObject bulletHole;
-    public GameObject muzzleflash;
-    public Image Weapon_Icon_Slot;
-    
-   
+
+    void Check()
+    {
+        if (wpn_index == Manager.weaponList[wpn_index].WeaponIndex)
+        {
+            Weapons = Manager.weaponList[wpn_index];
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        Sway_Amount = 0.02f;
-        Sway_maxAmount = 0.08f;
-        Sway_smoothAmount = 6f;
+        Check();
 
-        currentBullets = bulletPerMag;
-        bulletsLeft = maxAmmo - bulletPerMag;
+        currentBullets = Weapons.bulletPerMag;
+        bulletsLeft = Weapons.maxAmmo - Weapons.bulletPerMag;
         originalPos = transform.localPosition;
-        InicialSpread = normalSpread;
+        originalRot = transform.rotation;
+        //Weapons.InicialSpread = normalSpread;
 
         //Turn Units to Meters
-        rangeUnit = (rangeMeters * 20) / 10;
+        rangeUnit = (Weapons.rangeMeters * 20) / 10;
 
-        Weapons = Weapons.GetComponent<WeaponManager>();
         Player = Player.GetComponent<Player_Script>();
-
-
+        go = GetComponent<GameObject>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Update
+        Check();
+        UpdateUI();
+        Inputs();
         Sway();
-        foreach (var WeaponIndex in Weapons.WeaponList)
+
+        //Fire Rate
+        if (fireTimer < Weapons.fireRate)
+            fireTimer += Time.deltaTime;
+
+        //Reload (Auto)
+        if (currentBullets == 0 && currentBullets < Weapons.bulletPerMag && bulletsLeft > 0)
         {
-            if (Weapons.WeaponList[this.WeaponIndex] == WeaponIndex)
-            {
-                Inputs();
-
-                //UpdateUI
-                UpdateUI();
-
-                //Fire Rate
-                if (fireTimer < fireRate)
-                    fireTimer += Time.deltaTime;
-
-                //Reload (Auto)
-                if (currentBullets == 0 && currentBullets < bulletPerMag && bulletsLeft > 0)
-                {
-                    StartCoroutine("ReloadEnum");
-                }
-            }
+            StartCoroutine("ReloadEnum");
         }
     }
 
     void Sway()
     {
-        float moveX = -Input.GetAxis("Mouse X") * Sway_Amount;
-        float moveY = -Input.GetAxis("Mouse Y") * Sway_Amount;
-        moveX = Mathf.Clamp(moveX, -Sway_maxAmount, Sway_maxAmount);
-        moveY = Mathf.Clamp(moveY, -Sway_maxAmount, Sway_maxAmount);
+        Vector2 camInput = plymove.playerInput.actions["Look"].ReadValue<Vector2>();
+
+        float moveX = -camInput.x * Weapons.SwayAmount;
+        float moveY = -camInput.y * Weapons.SwayAmount;
+        moveX = Mathf.Clamp(moveX, -Weapons.SwayMaxAmount, Weapons.SwayMaxAmount);
+        moveY = Mathf.Clamp(moveY, -Weapons.SwayMaxAmount, Weapons.SwayMaxAmount);
 
         Vector3 finalPos = new Vector3(moveX, moveY, 0);
-        transform.localPosition = Vector3.Lerp(transform.localPosition, finalPos + originalPos, Time.deltaTime * Sway_smoothAmount);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, finalPos + originalPos, Time.deltaTime * Weapons.SwaySmoothAmount);
     }
 
     void Inputs()
     {
+        if (Time.deltaTime == 0){ return; }
+        //plymove._Gamepad();
+
         //Make Weapon Shoot
-        if (Weapons.WeaponList[WeaponIndex].fireMode == weapons.WeaponFireMode.Auto)
+        if (Weapons.fireMode == WeaponSettings.WeaponFireMode.Auto)
         {
-            if (Mouse.current.leftButton.isPressed)
+            if (Mouse.current.leftButton.isPressed /*|| plymove.gp1.rightTrigger.isPressed*/)
             {
                 if (IsReloading == false && currentBullets > 0)
                 {
@@ -130,13 +108,13 @@ public class WeaponBase : MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine("ReloadFix");
+                    StartCoroutine("ReloadEnum");
                 }
             }
         }
-        else if (Weapons.WeaponList[WeaponIndex].fireMode == weapons.WeaponFireMode.Semi)
+        else if (Weapons.fireMode == WeaponSettings.WeaponFireMode.Semi)
         {
-            if (Mouse.current.leftButton.wasPressedThisFrame)
+            if (Mouse.current.leftButton.wasPressedThisFrame /*|| plymove.gp1.rightTrigger.wasPressedThisFrame*/)
             {
                 if (IsReloading == false && currentBullets > 0)
                 {
@@ -148,24 +126,39 @@ public class WeaponBase : MonoBehaviour
                 }
                 else if (currentBullets == 0)
                 {
-                    StartCoroutine("ReloadFix");
+                    StartCoroutine("ReloadEnum");
                 }
             }
         }
-        else if (Weapons.WeaponList[WeaponIndex].fireMode == weapons.WeaponFireMode.Burst)
+        else if (Weapons.fireMode == WeaponSettings.WeaponFireMode.Burst)
         {
             // Burst Fire
         }
+
+        /*/ADS Function
+        if (Mouse.current.rightButton.isPressed || plymove.gp1.leftTrigger.isPressed)
+        {
+            normalSpread = 0;
+            transform.localPosition = Vector3.Lerp(transform.localPosition, adsPos, Time.deltaTime * ADSSpeed);
+            crosshair.SetActive(false);
+        }
+        else
+        {
+            normalSpread = InicialSpread;
+            transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, Time.deltaTime * ADSSpeed);
+            crosshair.SetActive(true);
+        }*/
     }
 
     //Reload Function
     void ReloadFun()
     {
+       
         if (IsReloading == true)
         {
             if (bulletsLeft <= 1) return;
 
-            int bulletToLoad = bulletPerMag - currentBullets;
+            int bulletToLoad = Weapons.bulletPerMag - currentBullets;
             int bulletsToDeduct = (bulletsLeft >= bulletToLoad) ? bulletToLoad : bulletsLeft;
 
             bulletsLeft -= bulletsToDeduct;
@@ -181,7 +174,7 @@ public class WeaponBase : MonoBehaviour
         //audio.Play();
         //anim.Stop("fire");
         //anim.Play("reload");
-        yield return new WaitForSeconds(ReloadTime);
+        yield return new WaitForSeconds(Weapons.ReloadTime);
         ReloadFun();
         IsReloading = false;
     }
@@ -192,23 +185,34 @@ public class WeaponBase : MonoBehaviour
     }
 
     //Shoot Function
-    void Shoot()
+    public void Shoot()
     {
+        
         //Make Weapon Shoot
         if (IsReloading == false && currentBullets > 0)
         {
-            if (fireTimer < fireRate || currentBullets <= 0) return;
+            if (fireTimer < Weapons.fireRate || currentBullets <= 0) return;
             Debug.Log("Fired");
 
             RaycastHit hit;
             Vector3 direction = shootPoint.transform.forward;
-            direction.x += Random.Range(-normalSpread, normalSpread);
-            direction.y += Random.Range(-normalSpread, normalSpread);
-            direction.z += Random.Range(-normalSpread, normalSpread);
+            direction.x += Random.Range(-Weapons.normalSpread, Weapons.normalSpread);
+            direction.y += Random.Range(-Weapons.normalSpread, Weapons.normalSpread);
+            direction.z += Random.Range(-Weapons.normalSpread, Weapons.normalSpread);
+
+            //Visual Recoil
+            ///Weapon Force - Position
+            Vector3 vRecoilPos = new Vector3(0f, 0f, 0.1f);
+            transform.localPosition = Vector3.Lerp(-vRecoilPos, transform.localPosition, 10 * Time.deltaTime);
+            Debug.Log(vRecoilPos + " / " + transform.localPosition);
+
+            ///Weapon Force - Rotation
+            
+
 
             if (Physics.Raycast(shootPoint.position, direction, out hit, rangeUnit))
             {
-                Instantiate(bulletHole, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
+                Instantiate(Weapons.bulletHole, hit.point, Quaternion.FromToRotation(Vector3.back, hit.normal));
                 Debug.Log("Hit " + hit.collider.name + " (" + hit.collider.tag + ")");
 
                 if (hit.transform.tag == "Enemy")
@@ -221,13 +225,13 @@ public class WeaponBase : MonoBehaviour
             //audio.clip = firesound;
             //audio.Play();
 
-            if (fireTimer < fireRate)
+            if (fireTimer < Weapons.fireRate)
                 fireTimer += Time.deltaTime;
 
             currentBullets--;
             fireTimer = 0.0f;
         }
-        else if (currentBullets <= 0 && bulletsLeft <= 0)
+        else if (currentBullets <= 1 && bulletsLeft <= 0)
         {
             IsReloading = false;
         }
@@ -237,38 +241,12 @@ public class WeaponBase : MonoBehaviour
         }
     }
 
-    //ADS Function
-    void ADS()
-    {
-        if (Mouse.current.rightButton.isPressed)
-        {
-            normalSpread = 0;
-            transform.localPosition = Vector3.Lerp(transform.localPosition, adsPos, Time.deltaTime * ADSSpeed);
-            crosshair.SetActive(false);
-        }
-        else
-        {
-            normalSpread = InicialSpread;
-            transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, Time.deltaTime * ADSSpeed);
-            crosshair.SetActive(true);
-        }
-    }
-    
     //Update UI
     void UpdateUI()
     {
+        Check();
         BulletsText.text = currentBullets.ToString() + "/" + bulletsLeft.ToString();
-        WeaponNameText.text = Weapons.WeaponList[WeaponIndex].name.ToString() + " - " + Weapons.WeaponList[WeaponIndex].fireMode.ToString();
-        Weapon_Icon_Slot.sprite = Weapons.WeaponList[WeaponIndex].WeaponIcon_UI;
-    }
-
-    private void OnEnable()
-    {
-        //controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        //controls.Disable();
+        WeaponNameText.text = Weapons.WeaponName.ToString() + " - " + Weapons.fireMode.ToString();
+        //Weapon_Icon_Slot.sprite = Weapons.WeaponIconUI;
     }
 }

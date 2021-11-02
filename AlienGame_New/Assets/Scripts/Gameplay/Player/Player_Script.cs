@@ -4,12 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-
-[System.Serializable]
-public struct ActiveWeapon
-{
-    public int WpnIndex;
-}
+using TMPro;
 
 [System.Serializable]
 public struct ActivePerks
@@ -22,10 +17,13 @@ public class Player_Script : MonoBehaviour
     [SerializeField]
     Text DebugTXT;
     public Player_Movement plymove;
-    public Text UI_Alert;
+    public TextMeshProUGUI UI_Alert;
+    public GameManager GameManager;
+    public ScoreboardBehaviour scoreboard;
 
     [Header("Player Properties")]
     public GameObject GO_Scoreboard;
+    //public GameObject GO_Pause;
     public float health;
 
     [HideInInspector]
@@ -36,60 +34,43 @@ public class Player_Script : MonoBehaviour
     public int Points;
     int pointsPerHit = 10;
     int InicialPoints = 500;
-    public Text PointsText;
-
-    [Header("Score")]
-    public int Score;
-    int scorePerKill = 100;
-    public Slider ScoreSlider;
-
-
-    [Header("Weapon Manager")]
-    public WeaponManager WpnBase;
-    public int currentWpn;
-    [Range(1, 3)]
-    public int nrWpn;
-    int WpnIdx;
-    public ActiveWeapon[] activeWeapons = new ActiveWeapon[0];
+    public TextMeshProUGUI PointsText;
 
     [Header("Perk Manager")]
+    public Image prkIcon;
+    public Slider timerSlider;
     public PerksManager PrkBase;
-    public GameObject[] PrkSlots;
-    [Range(1, 3)]
-    public int nrPrk;
-    public ActivePerks[] activePrk = new ActivePerks[0];
+    public int ActivePrk;
+    float Timer;
+    int DelayAmount = 1;
 
-
-
-    private void Awake()
-    {
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        WpnBase = WpnBase.GetComponent<WeaponManager>();
+        //WpnBase = WpnBase.GetComponent<WeaponManager>();
 
         Cursor.lockState = CursorLockMode.Locked;
         GO_Scoreboard.SetActive(false);
+        //GO_Pause.SetActive(false);
+
+        //PlayerSetup
+        scoreboard.p_name = GameManager.playerName;
 
         
         //Points = InicialPoints;
         PointsText.text = Points.ToString();
 
         //Perks
-        Perks();
 
-        //Write before this
+        /*/Write before this
         //Check which weapon is the current one
-        foreach (var WeaponIndex in WpnBase.WeaponList)
+        WpnIdx = activeWeapons[currentWpn].WpnIndex;
+        if (WpnIdx == Manager.weaponList[WpnIdx].WeaponIndex)
         {
-            WpnIdx = activeWeapons[currentWpn].WpnIndex;
-            if (WpnBase.WeaponList[WpnIdx] == WeaponIndex)
-            {
-                SwitchWeapon(currentWpn);
-            }
-        }
+            Weapons = Manager.weaponList[WpnIdx];
+            SwitchWeapon(currentWpn);
+        }*/
     }
 
     // Update is called once per frame
@@ -99,25 +80,18 @@ public class Player_Script : MonoBehaviour
 
         //Player Properties
         ShowScoreboard();
+        //ShowPause();
+        PlayerLvl();
 
         //Points System
         PointsText.text = Points.ToString();
 
         //Weapons Systems
-        WeaponProperties();
+        //WeaponProperties();
 
         //Perks
-       if (PrkSlots[0].GetComponent<PerkSlotBehaviour>().isActive)
-        {
-            ChangePrkScore(1);
-            return;
-        }
-       else if (PrkSlots[1].GetComponent<PerkSlotBehaviour>().isActive)
-        {
-            ChangePrkScore(2);
-            return;
-        }
-        
+        Perks();
+
         DebugHUD();
     }
 
@@ -125,7 +99,9 @@ public class Player_Script : MonoBehaviour
     #region PlayerProperties
     void ShowScoreboard()
     {
-        if (Keyboard.current.tabKey.isPressed)
+        //plymove._Gamepad();
+
+        if (Keyboard.current.tabKey.isPressed /*|| plymove.gp1.selectButton.isPressed*/)
         {
             GO_Scoreboard.SetActive(true);
         }
@@ -134,11 +110,68 @@ public class Player_Script : MonoBehaviour
             GO_Scoreboard.SetActive(false);
         }
     }
-
-    public void GetScore()
+    /*void ShowPause()
     {
-        ScoreSlider.value += scorePerKill;
+        //plymove._Gamepad();
+
+        if (Keyboard.current.escapeKey.wasPressedThisFrame && GO_Pause.active == false)
+        {
+            GO_Pause.SetActive(true);
+            Time.timeScale = 0.0f;
+        }
+        else if (Keyboard.current.escapeKey.wasPressedThisFrame && GO_Pause.active == true)
+        {
+            GO_Pause.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
+
+        if (GO_Pause.active == true) 
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else { Cursor.lockState = CursorLockMode.Locked; }
+    }*/
+
+    void PlayerLvl()
+    {
+        switch (GameManager.playerLvl)
+        {
+            case 1:
+                scoreboard.p_lvl = GameManager.lvlIcons[0];
+                break;
+            case 10:
+                scoreboard.p_lvl = GameManager.lvlIcons[1];
+                break;
+            case 20:
+                scoreboard.p_lvl = GameManager.lvlIcons[2];
+                break;
+            case 30:
+                scoreboard.p_lvl = GameManager.lvlIcons[3];
+                break;
+            case 40:
+                scoreboard.p_lvl = GameManager.lvlIcons[4];
+                break;
+            case 50:
+                scoreboard.p_lvl = GameManager.lvlIcons[5];
+                break;
+            case 60:
+                scoreboard.p_lvl = GameManager.lvlIcons[6];
+                break;
+            case 70:
+                scoreboard.p_lvl = GameManager.lvlIcons[7];
+                break;
+            case 80:
+                scoreboard.p_lvl = GameManager.lvlIcons[8];
+                break;
+            case 90:
+                scoreboard.p_lvl = GameManager.lvlIcons[9];
+                break;
+            case 100:
+                scoreboard.p_lvl = GameManager.lvlIcons[10];
+                break;
+        }
     }
+
 
     public void GetPoints()
     {
@@ -146,11 +179,11 @@ public class Player_Script : MonoBehaviour
     }
     #endregion PlayerProperties
 
-    
-
     #region Weapons
-    void WeaponProperties()
+    /*void WeaponProperties()
     {
+        //plymove._Gamepad();
+
         //Resize Weapon
         for (int i = 0; i < nrWpn; i++)
         {
@@ -160,73 +193,50 @@ public class Player_Script : MonoBehaviour
         //Switch
         for (int i = 1; i <= activeWeapons.Length; i++)
         {
-            if (Input.GetKeyDown("" + i))
+            if(activeWeapons.Length > 1)
             {
-                currentWpn = i - 1;
+                if (Input.GetKeyDown("" + i)/* || plymove.gp1.buttonNorth.wasPressedThisFrame)
+                {
+                    currentWpn = i - 1;
 
-                SwitchWeapon(currentWpn);
+                    SwitchWeapon(currentWpn);
+                }
             }
         }
     }
 
     public void SwitchWeapon(int index)
     {
-        for (int i = 0; i < WpnBase.WeaponList.Length; i++)
+        for (int i = 0; i < Manager.weaponList.Length; i++)
         {
-            if (i == index)
+            if (i == activeWeapons[index].WpnIndex)
             {
-
-                WpnBase.WeaponList[activeWeapons[i].WpnIndex].WpnBase.gameObject.SetActive(true);
+                Manager.weaponList[i].GO.gameObject.SetActive(true);
+                //Weapons.GO.gameObject.SetActive(true);
             }
             else
             {
-                try
-                {
-                    WpnBase.WeaponList[activeWeapons[i].WpnIndex].WpnBase.gameObject.SetActive(false);
-                }
-                catch (IndexOutOfRangeException) { };
+                Manager.weaponList[i].GO.gameObject.SetActive(false);
+                //Weapons.GO.gameObject.SetActive(false);
             }
         }
-    }
+    }*/
     #endregion Weapons
 
     #region Perks
     void Perks()
     {
-        for (int i = 0; i < nrPrk; i++)
-        {
-            Array.Resize(ref activePrk, nrPrk);
-        }
+        PrkBase.PerkList[ActivePrk].isActive = true;
+        prkIcon.sprite = PrkBase.PerkList[ActivePrk].perkIcon;
 
-        switch (nrPrk)
-        {
-            default:
-                break;
-            case 1:
-                PrkSlots[0].gameObject.active = true;
-                PrkSlots[1].gameObject.active = false;
-                PrkSlots[2].gameObject.active = false;
-                break;
-            case 2:
-                PrkSlots[0].gameObject.active = true;
-                PrkSlots[1].gameObject.active = true;
-                PrkSlots[2].gameObject.active = false;
-                break;
-            case 3:
-                PrkSlots[0].gameObject.active = true;
-                PrkSlots[1].gameObject.active = true;
-                PrkSlots[2].gameObject.active = true;
-                break;
-        }
-        
-        ChangePrkScore(0);
-    }
+        Timer += Time.deltaTime;
 
-    void ChangePrkScore(int prkSlot)
-    {
-        Debug.Log("Value Chnaged?!: " + prkSlot);
-        ScoreSlider.value = 0;
-        ScoreSlider.maxValue = PrkSlots[prkSlot].GetComponent<PerkSlotBehaviour>().scoreToGet;
+        if (Timer >= DelayAmount)
+        {
+            Timer = 0f;
+            timerSlider.value++;
+        }
+        timerSlider.maxValue = PrkBase.PerkList[ActivePrk].timeEarn;
     }
     #endregion Perks
 

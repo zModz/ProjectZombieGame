@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8996463054213185637}
   - component: {fileID: 8996463054213185642}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FXVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,4 +47,4 @@ MonoBehaviour:
   priority: -1
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: a123fc0ac58cb774e8592c925f167e7c, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 6cfc11b60e6000841927bda06f98bf70, type: 2}

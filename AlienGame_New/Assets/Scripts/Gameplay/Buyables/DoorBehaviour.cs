@@ -1,45 +1,59 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DoorBehaviour : MonoBehaviour
 {
     public bool isOpen;
     public int pointsToBuy;
-    Animator anim;
-    SphereCollider sphere;
+    [SerializeField]
+    int timer;
+
+    [Header("Game Objects")]
+    public SphereCollider area;
+    public GameObject explosive;
+    public TextMeshPro explo_timer;
+    public GameObject door;
     public Player_Script player;
 
     private void Start()
     {
-        anim = GetComponent<Animator>();
-        sphere = GetComponent<SphereCollider>();
+        explosive.SetActive(false);
+        area = area.GetComponent<SphereCollider>();
         player = player.GetComponent<Player_Script>();
+        Debug.Log(gameObject.tag);
     }
 
-    public void BuyDoor()
+    IEnumerator BuyDoor()
     {
         player.Points -= pointsToBuy;
-        //Debug.Log(player.Points + " - " + pointsToBuy);
+        explosive.SetActive(true);
+        int temp = timer;
+        temp = temp - 1;
+        explo_timer.text = "00:0" + temp;
+        yield return new WaitForSeconds(timer);
         isOpen = true;
-        anim.SetBool("Trigger_Open", true);
-        sphere.enabled = false;
+        explosive.SetActive(false);
+        door.SetActive(false);
+        area.enabled = false;
+        player.UI_Alert.text = "";
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (gameObject.tag == "Door")
         {
+            Debug.Log("HERE!");
             if (other.gameObject.tag == "Player")
             {
-                //Debug.Log("D_in");
+                Debug.Log("HERE AGAIN!");
                 if (!isOpen)
                 {
-                    anim.SetBool("Trigger_Open", false);
                     player.UI_Alert.text = "Press F to open (Cost: " + pointsToBuy + ")";
                     if (Input.GetKeyDown(KeyCode.F) && player.Points >= pointsToBuy)
                     {
-                        BuyDoor();
+                        StartCoroutine(BuyDoor());
                     }
                 }
             }
@@ -52,7 +66,7 @@ public class DoorBehaviour : MonoBehaviour
         {
             if (other.gameObject.tag == "Player")
             {
-                //Debug.Log("out");
+                Debug.Log("out");
                 player.UI_Alert.text = "";
             }
         }

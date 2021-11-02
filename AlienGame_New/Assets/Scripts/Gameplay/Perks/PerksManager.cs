@@ -13,7 +13,7 @@ public class Perks
     //Removed
     [Header("Buyable")]
     public bool isBuyable;
-    public int pointsToBuy;
+    public int timeEarn;
     //Removed
 }
 

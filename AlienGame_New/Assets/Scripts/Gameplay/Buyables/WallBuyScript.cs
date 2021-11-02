@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class WallBuyScript : MonoBehaviour
 {
+    public Transform obj;
     [Header("Neccessary Variables")]
     public bool isUsed;
-    public WeaponManager Wpn;
+    //WeaponSettings Wpn;
+    public WeaponManager Manager;
     public Player_Script pointManager;
+    public WeaponSwitch weaponManager;
     public SpriteRenderer WpnIcon;
     public Transform eyesPoint;
     public Text text;
@@ -18,62 +22,70 @@ public class WallBuyScript : MonoBehaviour
     {
         pointManager = pointManager.GetComponent<Player_Script>();
         WpnIcon = WpnIcon.GetComponent<SpriteRenderer>();
-        Wpn = Wpn.GetComponent<WeaponManager>();
+        obj = this.GetComponent<Transform>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        foreach (var wpnIndex in Wpn.WeaponList)
+        if (WpnIndex == Manager.weaponList[WpnIndex].WeaponIndex)
         {
-            if (Wpn.WeaponList[this.WpnIndex] == wpnIndex)
-            {
-                WpnIcon.sprite = Wpn.WeaponList[this.WpnIndex].WeaponIcon_buy;
-            }
-        }
+           var Wpn = Manager.weaponList[WpnIndex];
+           WpnIcon.sprite = Wpn.WeaponIconBuy;
 
-        if (Physics.Raycast(eyesPoint.position, eyesPoint.transform.forward, out RaycastHit hit))
-        {
-            //Debug.Log(hit.transform + "/" + hit.transform.tag);
-            if (hit.transform == gameObject.transform && hit.transform.tag == "WallBuy" && hit.distance < 2)
+
+           //CHANGE THIS TO COLLIDERS INSTEAD OF RAYCAST
+            if (Physics.Raycast(eyesPoint.position, eyesPoint.transform.forward, out RaycastHit hit))
             {
-                Buy(WpnIndex);
-            }
-            else
-            {
-                text.text = "";
+                //Debug.Log(hit.transform + "/" + hit.transform.tag);
+                if (hit.transform == obj && obj.tag == "WallBuy" && hit.distance < 2)
+                {
+                    Debug.Log(transform.name + " / " + Manager.weaponList[WpnIndex].WeaponIndex + " / " + WpnIndex + " / " + Manager.weaponList[WpnIndex].WeaponName);
+                    this.Buy(this.WpnIndex);
+                }
+                else
+                {
+                    text.text = "";
+                }
             }
         }
     }
     
-    void Buy(int WpnNum)
+    void Buy(int index)
     {
-        if(isUsed != true && Wpn.WeaponList[WpnNum].isBuyable != false)
+        string _text = "Press F to buy " + "(" + Manager.weaponList[index].WeaponIndex + ")" + Manager.weaponList[index].WeaponName + " for " + Manager.weaponList[index].pointsToBuy;
+        //Debug.Log("BuyFunc: " + index);
+        if (isUsed != true && Manager.weaponList[index].isBuyable != false)
         {
-            text.text = "Press F to buy " + Wpn.WeaponList[WpnNum].name + " for " + Wpn.WeaponList[WpnNum].pointsToBuy;
-            if (Input.GetKeyDown(KeyCode.F) && pointManager.Points >= Wpn.WeaponList[WpnNum].pointsToBuy)
+            if(text.text == "")
+            {
+                text.text = _text;
+            }
+            Debug.Log(text.text);
+            if (Input.GetKeyDown(KeyCode.F) && pointManager.Points >= Manager.weaponList[index].pointsToBuy)
             {
                 isUsed = true;
-                pointManager.Points -= Wpn.WeaponList[WpnNum].pointsToBuy;
-                StartCoroutine(Buy());
+                pointManager.Points -= Manager.weaponList[index].pointsToBuy;
+                StartCoroutine(BuyBehave());
             }
         }
         else if (isUsed)
         {
-            text.text = "Press F to buy " + Wpn.WeaponList[WpnNum].name + " ammo for " + Wpn.WeaponList[WpnNum].pointsToBuyAmmo + " or buy again for " + Wpn.WeaponList[WpnNum].pointsToBuy;
+            text.text = "Press F to buy " + Manager.weaponList[index].WeaponName + " ammo for " + Manager.weaponList[index].pointsToBuyAmmo + " or buy again for " + Manager.weaponList[index].pointsToBuy;
         }
 
-        if (Wpn.WeaponList[WpnNum].isBuyable == false)
+        if (Manager.weaponList[index].isBuyable == false)
         {
             text.text = "You cannot buy this item at this time.";
         }
     }
 
-    IEnumerator Buy()
+    IEnumerator BuyBehave()
     {
-        pointManager.nrWpn = 2;
+        weaponManager.nrWpn = 2;
         yield return new WaitForSeconds(0.1f);
-        pointManager.activeWeapons[1].WpnIndex = WpnIndex;
-        pointManager.SwitchWeapon(1);
+        weaponManager.activeWeapons[1].WpnIndex = WpnIndex;
+        weaponManager.currentWpn = weaponManager.activeWeapons[1].WpnIndex;
+        weaponManager.SwitchWeapon(weaponManager.currentWpn);
     }
 }
