@@ -1,0 +1,430 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de0dcbbab9c2f814cb423345bb3d9c5d, type: 3}
+  m_Name: WeaponSettings
+  m_EditorClassIdentifier: 
+  weaponList:
+  - name: M4A1
+    WeaponIndex: 0
+    WeaponName: M4A1
+    WeaponIconUI: {fileID: 21300000, guid: 3132db47e5ebd5f4bba44acb6a61bdb1, type: 3}
+    WpnBase: {fileID: 1802588747305411230, guid: bd02ddf577f7f5444b1e9cde7da2da51,
+      type: 3}
+    weaponType: 0
+    fireMode: 0
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0.001
+    SwaySmoothAmount: 10
+    SwayMaxAmount: 2
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 30
+    maxAmmo: 128
+    ReloadTime: 5
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 62
+    fireRate: 0.15
+    normalSpread: 0.05
+    crosshair: {fileID: 6926659657073208399, guid: 1f13f0d4bfcd3644e88860683f8486ed,
+      type: 3}
+    bulletHole: {fileID: 1575007575524735364, guid: ca8c6256f94a6fc4bae0c258c9bc9dfd,
+      type: 3}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: 9acd66ebfc7c8e14685ce22df7172063, type: 3}
+    pointsToBuyAmmo: 250
+    pointsToBuy: 1500
+  - name: SCAR-L
+    WeaponIndex: 1
+    WeaponName: SCAR-L
+    WeaponIconUI: {fileID: 21300000, guid: 229f2cb146f2ae4449bf0ed316cdf6b3, type: 3}
+    WpnBase: {fileID: 5994286422095160145, guid: 758d77989b81c6e4099c5a1af0d43d43,
+      type: 3}
+    weaponType: 0
+    fireMode: 0
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 6704128566954825080, guid: 8e5e678fa51f1814ab90542f231c2406,
+      type: 3}
+    bulletHole: {fileID: 1575007575524735364, guid: ca8c6256f94a6fc4bae0c258c9bc9dfd,
+      type: 3}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: f7753145bcd50f243a99c6afe4c5e223, type: 3}
+    pointsToBuyAmmo: 50
+    pointsToBuy: 1500
+  - name: MP7
+    WeaponIndex: 2
+    WeaponName: MP7
+    WeaponIconUI: {fileID: 21300000, guid: 162a53ad610655b499b64eda927dc1f8, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 1
+    fireMode: 0
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: 2cec5046afb8fac43b3ad016c9f37c06, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: MP5
+    WeaponIndex: 3
+    WeaponName: MP5
+    WeaponIconUI: {fileID: 21300000, guid: a4feee4b8c68ffc4bb4cc72c0d1cfb68, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 1
+    fireMode: 0
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: d1817fe1228c7814ebe63cc70cfce627, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: VECTOR
+    WeaponIndex: 4
+    WeaponName: Vector
+    WeaponIconUI: {fileID: 21300000, guid: f6bbcbed5e04aa74fb0ceed3728652bc, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 1
+    fireMode: 0
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: 016dae6593412214099ee57f4a483066, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: MOSSBERG
+    WeaponIndex: 5
+    WeaponName: Mossberg
+    WeaponIconUI: {fileID: 21300000, guid: b3ab8d30fa073df4a807022c3f363b63, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 4
+    fireMode: 1
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: 2aaae6ebe2d56474ca8b43d1c6be23a1, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: R870
+    WeaponIndex: 6
+    WeaponName: R870
+    WeaponIconUI: {fileID: 21300000, guid: 1baab4df6e0d22848a4a91770b96f082, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 4
+    fireMode: 1
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: 5d37637227463704e846c7c635c4df16, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: W1887
+    WeaponIndex: 7
+    WeaponName: W1887
+    WeaponIconUI: {fileID: 21300000, guid: d4da03456cd176e49885f68ed4c07a9e, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 0
+    fireMode: 0
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: 251adaf1fe7dd5d4ba0785ccb21c713c, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: XM1014
+    WeaponIndex: 8
+    WeaponName: XM1014
+    WeaponIconUI: {fileID: 21300000, guid: dfc8bd5c91c885049bd2b965db07fa97, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 4
+    fireMode: 1
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: 89983ed19b116124a8025810df5bb062, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: 1911
+    WeaponIndex: 9
+    WeaponName: 1911
+    WeaponIconUI: {fileID: 21300000, guid: ea2e3bb9d1df079458b72f08e8ea3b3f, type: 3}
+    WpnBase: {fileID: 2228356632501310201, guid: a915825944ef86b4a98b7d978e36ace6,
+      type: 3}
+    weaponType: 5
+    fireMode: 1
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0.001
+    SwaySmoothAmount: 10
+    SwayMaxAmount: 2
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 7
+    maxAmmo: 28
+    ReloadTime: 5
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 62
+    fireRate: 0.5
+    normalSpread: 0.01
+    crosshair: {fileID: 6926659657073208399, guid: 1f13f0d4bfcd3644e88860683f8486ed,
+      type: 3}
+    bulletHole: {fileID: 1575007575524735364, guid: ca8c6256f94a6fc4bae0c258c9bc9dfd,
+      type: 3}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 0
+    WeaponIconBuy: {fileID: 21300000, guid: a30d18c210855a948bc82d0f9b5b83b9, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: USP
+    WeaponIndex: 10
+    WeaponName: USP
+    WeaponIconUI: {fileID: 21300000, guid: b54020c8c83da3a46a3afaef39a5737c, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 5
+    fireMode: 1
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: c56463a1775c30d479d07f50acd8b419, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: RUGER22
+    WeaponIndex: 11
+    WeaponName: RUGER22
+    WeaponIconUI: {fileID: 21300000, guid: 4a3ed0660d887ba4aa4109c6567124b6, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 5
+    fireMode: 1
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: aa587764771958c4c80fa311b444f785, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: AWP
+    WeaponIndex: 12
+    WeaponName: AWP
+    WeaponIconUI: {fileID: 21300000, guid: abc90f7e4b2281d45974183be6614f49, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 3
+    fireMode: 1
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: 19a631c2c8949f14783f38325d0048ad, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
+  - name: R700
+    WeaponIndex: 13
+    WeaponName: R700
+    WeaponIconUI: {fileID: 21300000, guid: 8a4931dc04126a944bc87eef9e1c8c0a, type: 3}
+    WpnBase: {fileID: 0}
+    weaponType: 3
+    fireMode: 1
+    audio: {fileID: 0}
+    fireSound: {fileID: 0}
+    reloadSound: {fileID: 0}
+    SwayAmount: 0
+    SwaySmoothAmount: 0
+    SwayMaxAmount: 0
+    adsPos: {x: 0, y: 0, z: 0}
+    bulletPerMag: 0
+    maxAmmo: 0
+    ReloadTime: 0
+    damage: 0
+    ADSSpeed: 0
+    rangeMeters: 0
+    fireRate: 0
+    normalSpread: 0
+    crosshair: {fileID: 0}
+    bulletHole: {fileID: 0}
+    muzzleFlash: {fileID: 0}
+    isBuyable: 1
+    WeaponIconBuy: {fileID: 21300000, guid: 7afac49ff78fb6842aabf37de0aa9463, type: 3}
+    pointsToBuyAmmo: 0
+    pointsToBuy: 0
