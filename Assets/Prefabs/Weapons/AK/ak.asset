@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00f938b1eb3323d49b877046ecec5551, type: 3}
+  m_Name: ak
+  m_EditorClassIdentifier: 
+  WeaponIndex: 0
+  WeaponName: 
+  WeaponIconUI: {fileID: 0}
+  Wpn_GO: {fileID: 0}
+  weaponType: 0
+  fireMode: 0
+  audio: {fileID: 0}
+  fireSound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  SwayAmount: 0
+  SwaySmoothAmount: 0
+  SwayMaxAmount: 0
+  adsPos: {x: 0, y: 0, z: 0}
+  bulletPerMag: 30
+  maxAmmo: 150
+  ReloadTime: 5
+  damage: 0
+  ADSSpeed: 0
+  rangeMeters: 0
+  fireRate: 0.2
+  recoilX: 0
+  recoilY: 0
+  recoilZ: 0
+  snappiness: 0
+  returnSpeed: 0
+  pumpSpeed: 0
+  boltSpeed: 0
+  crosshair: {fileID: 0}
+  bulletHole: {fileID: 0}
+  muzzleFlash: {fileID: 0}
+  isBuyable: 0
+  WeaponIconBuy: {fileID: 0}
+  pointsToBuyAmmo: 0
+  pointsToBuy: 0

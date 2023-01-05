@@ -11,6 +11,8 @@ TagManager:
   - 
   - Water
   - UI
+  - Ground
+  - Weapon
   - 
   - 
   - 
@@ -34,9 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - PFX
   m_SortingLayers:
   - name: Default
     uniqueID: 0
