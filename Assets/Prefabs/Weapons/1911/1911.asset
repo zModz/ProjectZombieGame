@@ -21,9 +21,9 @@ MonoBehaviour:
   audio: {fileID: 0}
   fireSound: {fileID: 0}
   reloadSound: {fileID: 0}
-  SwayAmount: 0
-  SwaySmoothAmount: 0
-  SwayMaxAmount: 0
+  SwayAmount: 0.01
+  SwaySmoothAmount: 5
+  SwayMaxAmount: 2
   adsPos: {x: 0, y: 0, z: 0}
   bulletPerMag: 30
   maxAmmo: 300
@@ -31,7 +31,7 @@ MonoBehaviour:
   damage: 10
   ADSSpeed: 0
   rangeMeters: 30
-  fireRate: 1
+  fireRate: 0.1
   recoilX: 0
   recoilY: 0
   recoilZ: 0

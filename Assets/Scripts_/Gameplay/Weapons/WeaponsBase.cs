@@ -37,14 +37,12 @@ public class WeaponsBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UpdateUI();
-        Inputs();
-        //Sway();
-
-        // Recoil
         targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, weapon.returnSpeed * Time.deltaTime);
         currentRotation = Vector3.Slerp(currentRotation, targetRotation, weapon.snappiness * Time.fixedDeltaTime);
-        plymove.cam.transform.localRotation = Quaternion.Euler(currentRotation);
+
+        //UpdateUI();
+        Inputs();
+        Sway();
 
         // Fire Rate
         if (fireTimer < weapon.fireRate)
@@ -57,18 +55,27 @@ public class WeaponsBase : MonoBehaviour
         }
     }
 
-    //void Sway()
-    //{
-    //    Vector2 camInput = plymove.playerInput.actions["Look"].ReadValue<Vector2>();
+    void Recoil()
+    {
+        // Recoil
+        Debug.Log("recoiled");
 
-    //    float moveX = -camInput.x * weapon.SwayAmount;
-    //    float moveY = -camInput.y * weapon.SwayAmount;
-    //    moveX = Mathf.Clamp(moveX, -weapon.SwayMaxAmount, weapon.SwayMaxAmount);
-    //    moveY = Mathf.Clamp(moveY, -weapon.SwayMaxAmount, weapon.SwayMaxAmount);
+        plymove.cam.transform.localRotation = Quaternion.Euler(currentRotation);
+        targetRotation += new Vector3(weapon.recoilX, Random.Range(-weapon.recoilY, weapon.recoilY), Random.Range(-weapon.recoilZ, weapon.recoilZ));
+    }
 
-    //    Vector3 finalPos = new Vector3(moveX, moveY, 0);
-    //    transform.localPosition = Vector3.Lerp(transform.localPosition, finalPos + originalPos, Time.deltaTime * weapon.SwaySmoothAmount);
-    //}
+    void Sway()
+    {
+        Vector2 camInput = plymove.playerInput.actions["Look"].ReadValue<Vector2>();
+
+        float moveX = -camInput.x * weapon.SwayAmount;
+        float moveY = -camInput.y * weapon.SwayAmount;
+        moveX = Mathf.Clamp(moveX, -weapon.SwayMaxAmount, weapon.SwayMaxAmount);
+        moveY = Mathf.Clamp(moveY, -weapon.SwayMaxAmount, weapon.SwayMaxAmount);
+
+        Vector3 finalPos = new Vector3(moveX, moveY, 0);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, finalPos + originalPos, Time.deltaTime * weapon.SwaySmoothAmount);
+    }
 
     void Inputs()
     {
@@ -174,12 +181,12 @@ public class WeaponsBase : MonoBehaviour
         if (IsReloading == false && currentBullets > 0)
         {
             if (fireTimer < weapon.fireRate || currentBullets <= 0) return;
-            Debug.Log("Fired");
+            Debug.Log("Fired " + currentBullets);
 
             RaycastHit hit;
             Vector3 direction = shootPoint.transform.forward;
 
-            targetRotation += new Vector3(weapon.recoilX, Random.Range(-weapon.recoilY, weapon.recoilY), Random.Range(-weapon.recoilZ, weapon.recoilZ));
+            Recoil();
 
             if (Physics.Raycast(shootPoint.position, direction, out hit, rangeUnit))
             {
