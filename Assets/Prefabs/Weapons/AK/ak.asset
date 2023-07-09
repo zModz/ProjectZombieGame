@@ -21,26 +21,26 @@ MonoBehaviour:
   audio: {fileID: 0}
   fireSound: {fileID: 0}
   reloadSound: {fileID: 0}
-  SwayAmount: 0
-  SwaySmoothAmount: 0
-  SwayMaxAmount: 0
-  adsPos: {x: 0, y: 0, z: 0}
+  SwayAmount: 0.001
+  SwaySmoothAmount: 5
+  SwayMaxAmount: 2
+  adsPos: {x: 0.012, y: -0.076, z: 0.279}
   bulletPerMag: 30
   maxAmmo: 150
   ReloadTime: 5
   damage: 0
-  ADSSpeed: 0
-  rangeMeters: 0
+  ADSSpeed: 3
+  rangeMeters: 50
   fireRate: 0.2
-  recoilX: 0
-  recoilY: 0
+  recoilX: 10
+  recoilY: 15
   recoilZ: 0
   snappiness: 0
   returnSpeed: 0
   pumpSpeed: 0
   boltSpeed: 0
   crosshair: {fileID: 0}
-  bulletHole: {fileID: 0}
+  bulletHole: {fileID: 640871462709840076, guid: 3da73865e1e276141876ff51935e622f, type: 3}
   muzzleFlash: {fileID: 0}
   isBuyable: 0
   WeaponIconBuy: {fileID: 0}

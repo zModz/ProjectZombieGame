@@ -15,12 +15,11 @@ public class WeaponsBase : MonoBehaviour
     int fireMode;
     public Player_Movement plymove;
     Vector3 originalPos;
-    private Vector3 currentRotation;
-    private Vector3 targetRotation;
     [Header("UI")]
     public TextMeshProUGUI WeaponNameText;
     public TextMeshProUGUI BulletsText;
     public Transform shootPoint;
+    public bool isADS;
 
     // Start is called before the first frame update
     void Start()
@@ -37,8 +36,6 @@ public class WeaponsBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, weapon.returnSpeed * Time.deltaTime);
-        currentRotation = Vector3.Slerp(currentRotation, targetRotation, weapon.snappiness * Time.fixedDeltaTime);
 
         //UpdateUI();
         Inputs();
@@ -60,8 +57,11 @@ public class WeaponsBase : MonoBehaviour
         // Recoil
         Debug.Log("recoiled");
 
-        plymove.cam.transform.localRotation = Quaternion.Euler(currentRotation);
-        targetRotation += new Vector3(weapon.recoilX, Random.Range(-weapon.recoilY, weapon.recoilY), Random.Range(-weapon.recoilZ, weapon.recoilZ));
+        float currRecoilPosX = ((Random.value - .5f) /2) * weapon.recoilX;
+        float currRecoilPosY = ((Random.value - .5f) / 2) * (fireTimer >= 4 ? weapon.recoilY / 4 : weapon.recoilY);
+
+        plymove.h -= Mathf.Abs(currRecoilPosY);
+        plymove.v -= currRecoilPosX;
     }
 
     void Sway()
@@ -85,7 +85,7 @@ public class WeaponsBase : MonoBehaviour
         //Make Weapon Shoot
         if (fireMode == 0)
         {
-            if (Mouse.current.leftButton.isPressed /*|| plymove.gp1.rightTrigger.isPressed*/)
+            if (Mouse.current.leftButton.isPressed /*|| plymove.gp1.rightTrigger.isPressed*/) // Mouse.current.leftButton.isPressed /*|| plymove.gp1.rightTrigger.isPressed*/
             {
                 if (IsReloading == false && currentBullets > 0)
                 {
@@ -124,19 +124,32 @@ public class WeaponsBase : MonoBehaviour
             // Burst Fire
         }
 
-        /*/ADS Function
-        if (Mouse.current.rightButton.isPressed || plymove.gp1.leftTrigger.isPressed)
+        //ADS Function
+        if (Mouse.current.rightButton.isPressed /*|| plymove.gp1.leftTrigger.isPressed*/)
         {
-            normalSpread = 0;
-            transform.localPosition = Vector3.Lerp(transform.localPosition, adsPos, Time.deltaTime * ADSSpeed);
-            crosshair.SetActive(false);
+            isADS = true;
         }
         else
         {
-            normalSpread = InicialSpread;
-            transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, Time.deltaTime * ADSSpeed);
-            crosshair.SetActive(true);
-        }*/
+            isADS = false;
+        }
+        ADS_Function();
+    }
+
+    void ADS_Function()
+    {
+        if (!isADS)
+        {
+            //normalSpread = InicialSpread;
+            transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, Time.deltaTime * weapon.ADSSpeed);
+            //crosshair.SetActive(true);
+        }
+        else
+        {
+            //normalSpread = 0;
+            transform.localPosition = Vector3.Lerp(transform.localPosition, weapon.adsPos, Time.deltaTime * weapon.ADSSpeed);
+            //crosshair.SetActive(false);
+        }
     }
 
     //Reload Function
@@ -190,14 +203,30 @@ public class WeaponsBase : MonoBehaviour
 
             if (Physics.Raycast(shootPoint.position, direction, out hit, rangeUnit))
             {
-                Instantiate(weapon.bulletHole, hit.point, Quaternion.FromToRotation(Vector3.back, hit.normal));
-                Debug.Log("Hit " + hit.collider.name + " (" + hit.collider.tag + ")");
+                // Create a bullet hole in the object the player just shot
+                // // TODO: Have a diferent bullet hole for each material (for realism sake)
+                Instantiate(weapon.bulletHole, hit.point, Quaternion.FromToRotation(Vector3.back, hit.normal), hit.transform);
 
+                // Logic in case the player hits an enemy
                 if (hit.transform.tag == "Enemy")
                 {
                     //Player
                     //Player.GetPoints();
                 }
+
+                // Logic in case the player hits a object with physics
+                // // STILL DECIDING IF THIS MAKES INTO FINAL PRODUCT
+                if (hit.rigidbody)
+                {
+                    hit.rigidbody.AddForceAtPosition(250 * direction, hit.point);
+                }
+
+
+
+
+
+                // Debug shit
+                Debug.Log("Hit " + hit.collider.name + " (" + hit.collider.tag + ")");
             }
 
             //audio.clip = firesound;

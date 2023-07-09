@@ -41,6 +41,7 @@ public class Player_Movement : MonoBehaviour
     [Range(0, 100)]
     public int cam_sens_y = 1;
     public float v;
+    public float h;
 
     [Header("Head Bobbing")]
     public float walkingBobbingSpeed = 14f;
@@ -108,7 +109,7 @@ public class Player_Movement : MonoBehaviour
         Char.Move(velocity * Time.deltaTime);
 
         // Sprint
-        if (move.z > 0)
+        if (input.y > 0)
         {
             if (Keyboard.current.leftShiftKey.wasPressedThisFrame /*|| gp1.leftStickButton.wasPressedThisFrame*/)
             {
@@ -116,6 +117,14 @@ public class Player_Movement : MonoBehaviour
                 isRunning = true;
             }
             else if (Keyboard.current.leftShiftKey.wasReleasedThisFrame /*|| gp1.leftStickButton.wasReleasedThisFrame*/)
+            {
+                m_speed = _m_speed;
+                isRunning = false;
+            }
+        }
+        else if (input.y == 0)
+        {
+            if (Keyboard.current.leftShiftKey.isPressed)
             {
                 m_speed = _m_speed;
                 isRunning = false;
@@ -145,7 +154,7 @@ public class Player_Movement : MonoBehaviour
         // Cam Movement // Keyboard
         if (!isInverted)
         {
-            var h = camInput.x * cam_sens_x * Time.deltaTime;
+            h = camInput.x * cam_sens_x * Time.deltaTime;
             v += camInput.y * -cam_sens_y * Time.deltaTime;
 
             // Rotate player with mouse input

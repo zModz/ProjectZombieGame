@@ -32,8 +32,8 @@ MonoBehaviour:
   ADSSpeed: 0
   rangeMeters: 30
   fireRate: 0.1
-  recoilX: 0
-  recoilY: 0
+  recoilX: 5
+  recoilY: 10
   recoilZ: 0
   snappiness: 0
   returnSpeed: 0
