@@ -99,7 +99,7 @@ public class Player_Movement : MonoBehaviour
         Char.Move(move * m_speed * Time.deltaTime);
 
         // Jump
-        if (playerInput.actions["Jump"].triggered && isGrounded)
+        if (playerInput.actions["Jump"].WasPressedThisFrame() && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * -9.81f);
         }
