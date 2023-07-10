@@ -82,10 +82,10 @@ public class WeaponsBase : MonoBehaviour
         if (Time.deltaTime == 0){ return; }
         //plymove._Gamepad();
 
-        //Make Weapon Shoot
+        // Make Weapon Shoot
         if (fireMode == 0)
         {
-            if (Mouse.current.leftButton.isPressed /*|| plymove.gp1.rightTrigger.isPressed*/) // Mouse.current.leftButton.isPressed /*|| plymove.gp1.rightTrigger.isPressed*/
+            if (plymove.playerInput.actions["fire"].IsPressed())
             {
                 if (IsReloading == false && currentBullets > 0)
                 {
@@ -97,13 +97,13 @@ public class WeaponsBase : MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine("ReloadEnum");
+                    Reload();
                 }
             }
         }
         else if (fireMode == 1)
         {
-            if (Mouse.current.leftButton.wasPressedThisFrame /*|| plymove.gp1.rightTrigger.wasPressedThisFrame*/)
+            if (plymove.playerInput.actions["fire"].WasPressedThisFrame())
             {
                 if (IsReloading == false && currentBullets > 0)
                 {
@@ -115,7 +115,7 @@ public class WeaponsBase : MonoBehaviour
                 }
                 else if (currentBullets == 0)
                 {
-                    StartCoroutine("ReloadEnum");
+                    Reload();
                 }
             }
         }
@@ -124,8 +124,8 @@ public class WeaponsBase : MonoBehaviour
             // Burst Fire
         }
 
-        //ADS Function
-        if (Mouse.current.rightButton.isPressed /*|| plymove.gp1.leftTrigger.isPressed*/)
+        // ADS Function
+        if (plymove.playerInput.actions["ads"].IsPressed())
         {
             isADS = true;
         }
@@ -134,6 +134,12 @@ public class WeaponsBase : MonoBehaviour
             isADS = false;
         }
         ADS_Function();
+
+        // Manual Reload
+        if (plymove.playerInput.actions["reload"].WasPressedThisFrame())
+        {
+            Reload();
+        }
     }
 
     void ADS_Function()
