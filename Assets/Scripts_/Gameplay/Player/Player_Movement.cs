@@ -109,6 +109,7 @@ public class Player_Movement : MonoBehaviour
         Char.Move(velocity * Time.deltaTime);
 
         // Sprint
+        // TODO: Make sprint better
         if (input.y > 0)
         {
             if (Keyboard.current.leftShiftKey.wasPressedThisFrame /*|| gp1.leftStickButton.wasPressedThisFrame*/)

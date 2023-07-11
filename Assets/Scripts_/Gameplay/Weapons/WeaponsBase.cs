@@ -11,14 +11,23 @@ public class WeaponsBase : MonoBehaviour
     int bulletsLeft;
     float fireTimer;
     float rangeUnit;
-    bool IsReloading = false;
     int fireMode;
     public Player_Movement plymove;
+    public Animator anim;
+    int isMovingHash;
+    int isRunningHash;
+    int isShootingHash;
+    int isReloadingHash;
+    int isReloadingFullHash;
+    int ReloadMulti;
+    int fireRate;
     Vector3 originalPos;
+
     [Header("UI")]
     public TextMeshProUGUI WeaponNameText;
     public TextMeshProUGUI BulletsText;
     public Transform shootPoint;
+    public bool IsReloading = false;
     public bool isADS;
 
     // Start is called before the first frame update
@@ -28,7 +37,17 @@ public class WeaponsBase : MonoBehaviour
         bulletsLeft = weapon.maxAmmo - weapon.bulletPerMag;
         originalPos = transform.localPosition;
         fireMode = (int)weapon.fireMode;
-        
+
+        // Animations 
+        anim = GetComponent<Animator>();
+        isMovingHash = Animator.StringToHash("isMoving");
+        isRunningHash = Animator.StringToHash("isRunning");
+        isShootingHash = Animator.StringToHash("isShooting");
+        isReloadingHash = Animator.StringToHash("isReloading");
+        isReloadingFullHash = Animator.StringToHash("isReloadingFull");
+        ReloadMulti = Animator.StringToHash("ReloadMulti");
+        fireRate = Animator.StringToHash("FireRate");
+
         //Turn Units to Meters
         rangeUnit = (weapon.rangeMeters * 20) / 10;
     }
@@ -40,6 +59,7 @@ public class WeaponsBase : MonoBehaviour
         //UpdateUI();
         Inputs();
         Sway();
+        Animations();
 
         // Fire Rate
         if (fireTimer < weapon.fireRate)
@@ -161,7 +181,6 @@ public class WeaponsBase : MonoBehaviour
     //Reload Function
     void ReloadFun()
     {
-       
         if (IsReloading == true)
         {
             if (bulletsLeft <= 1) return;
@@ -172,6 +191,8 @@ public class WeaponsBase : MonoBehaviour
             bulletsLeft -= bulletsToDeduct;
             currentBullets += bulletsToDeduct;
         }
+
+        Debug.Log("reloading...");
     }
 
     IEnumerator ReloadEnum()
@@ -180,8 +201,6 @@ public class WeaponsBase : MonoBehaviour
         transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, Time.deltaTime);
         //audio.clip = reloadsound;
         //audio.Play();
-        //anim.Stop("fire");
-        //anim.Play("reload");
         yield return new WaitForSeconds(weapon.ReloadTime);
         ReloadFun();
         IsReloading = false;
@@ -195,62 +214,130 @@ public class WeaponsBase : MonoBehaviour
     //Shoot Function
     public void Shoot()
     {
-        
         //Make Weapon Shoot
-        if (IsReloading == false && currentBullets > 0)
+        if (fireTimer < weapon.fireRate || currentBullets <= 0) return;
+        Debug.Log("Fired");
+
+        RaycastHit hit;
+        Vector3 direction = shootPoint.transform.forward;
+
+
+        //plymove.m_speed = plymove._m_speed;
+        //plymove.isRunning = false;
+        Recoil();
+
+        if (Physics.Raycast(shootPoint.position, direction, out hit, rangeUnit))
         {
-            if (fireTimer < weapon.fireRate || currentBullets <= 0) return;
-            Debug.Log("Fired " + currentBullets);
+            // Create a bullet hole in the object the player just shot
+            // // TODO: Have a diferent bullet hole for each material (for realism sake)
+            Instantiate(weapon.bulletHole, hit.point, Quaternion.FromToRotation(Vector3.back, hit.normal), hit.transform);
 
-            RaycastHit hit;
-            Vector3 direction = shootPoint.transform.forward;
-
-            Recoil();
-
-            if (Physics.Raycast(shootPoint.position, direction, out hit, rangeUnit))
+            // Logic in case the player hits an enemy
+            if (hit.transform.tag == "Enemy")
             {
-                // Create a bullet hole in the object the player just shot
-                // // TODO: Have a diferent bullet hole for each material (for realism sake)
-                Instantiate(weapon.bulletHole, hit.point, Quaternion.FromToRotation(Vector3.back, hit.normal), hit.transform);
-
-                // Logic in case the player hits an enemy
-                if (hit.transform.tag == "Enemy")
-                {
-                    //Player
-                    //Player.GetPoints();
-                }
-
-                // Logic in case the player hits a object with physics
-                // // STILL DECIDING IF THIS MAKES INTO FINAL PRODUCT
-                if (hit.rigidbody)
-                {
-                    hit.rigidbody.AddForceAtPosition(250 * direction, hit.point);
-                }
-
-
-
-
-
-                // Debug shit
-                Debug.Log("Hit " + hit.collider.name + " (" + hit.collider.tag + ")");
+                //Player
+                //Player.GetPoints();
             }
 
-            //audio.clip = firesound;
-            //audio.Play();
+            // Logic in case the player hits a object with physics
+            // // STILL DECIDING IF THIS MAKES INTO FINAL PRODUCT
+            if (hit.rigidbody)
+            {
+                hit.rigidbody.AddForceAtPosition(250 * direction, hit.point);
+            }
 
-            if (fireTimer < weapon.fireRate)
-                fireTimer += Time.deltaTime;
 
-            currentBullets--;
-            fireTimer = 0.0f;
+
+
+
+            // Debug shit
+            Debug.Log("Hit " + hit.collider.name + " (" + hit.collider.tag + ")");
         }
-        else if (currentBullets <= 1 && bulletsLeft <= 0)
-        {
-            IsReloading = false;
+
+        //audio.clip = firesound;
+        //audio.Play();
+
+        if (fireTimer < weapon.fireRate)
+            fireTimer += Time.deltaTime;
+
+        currentBullets--;
+        fireTimer = 0.0f;
+    }
+
+    void Animations()
+    {
+        bool isMoving = anim.GetBool(isMovingHash);
+        bool isRunning = anim.GetBool(isRunningHash);
+        bool isShooting = anim.GetBool(isShootingHash);
+        bool isReloading = anim.GetBool(isReloadingHash);
+        bool isReloadingFull = anim.GetBool(isReloadingFullHash);
+
+        //float reloadMulti = weapon.ReloadTime * 1;
+        //anim.SetFloat(ReloadMulti, reloadMulti);
+
+        //float firerate = weapon.fireRate * 6f;
+        //anim.SetFloat(fireRate, firerate);
+
+        if (!isMoving && !isShooting && plymove.isMoving) {
+            anim.SetBool(isMovingHash, true);
         }
-        else
+
+        if(isMoving && !plymove.isMoving)
         {
-            StartCoroutine("ReloadEnum");
+            anim.SetBool(isMovingHash, false);
+        }
+
+        if (!isRunning && !isShooting && (plymove.isMoving && plymove.isRunning))
+        {
+            anim.SetBool(isRunningHash, true);
+        }
+
+        if (isRunning && (!plymove.isMoving || !plymove.isRunning))
+        {
+            anim.SetBool(isRunningHash, false);
+        }
+
+
+
+
+        if (!isShooting && isMoving && isRunning && fireTimer < weapon.fireRate)
+        {
+            anim.SetBool(isMovingHash, false);
+            anim.SetBool(isRunningHash, false);
+            anim.SetBool(isShootingHash, true);
+        }
+
+        if (isShooting && !(fireTimer < weapon.fireRate))
+        {
+            anim.SetBool(isShootingHash, false);
+        }
+
+
+
+
+
+        if (!isReloading && isMoving && isShooting && currentBullets > 0 && currentBullets < weapon.bulletPerMag && IsReloading)
+        {
+            anim.SetBool(isMovingHash, false);
+            anim.SetBool(isRunningHash, false);
+            anim.SetBool(isShootingHash, false);
+            anim.SetBool(isReloadingHash, true);
+        }
+        else if (!isReloadingFull && currentBullets == 0 && IsReloading)
+        {
+            anim.SetBool(isMovingHash, false);
+            anim.SetBool(isRunningHash, false);
+            anim.SetBool(isShootingHash, false);
+            anim.SetBool(isReloadingFullHash, true);
+        }
+
+        if (isReloading && !IsReloading)
+        {
+            anim.SetBool(isReloadingHash, false);
+        }
+        else if(isReloadingFull && !IsReloading)
+        {
+            anim.SetBool(isReloadingFullHash, false);
         }
     }
 
