@@ -1,14 +1,15 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "pzg_weapon", menuName = "ProjectZombieGame/Create Weapon", order = 0)]
-public class pzg_weapon : ScriptableObject {
-    [Header("Basic")]
-    public int WeaponIndex;
-    public string WeaponName;
-    public Sprite WeaponIconUI;
-    public GameObject Wpn_GO;
+public class PzgWeapon : ScriptableObject {
+    [FormerlySerializedAs("WeaponIndex")] [Header("Basic")]
+    public int weaponIndex;
+    [FormerlySerializedAs("WeaponName")] public string weaponName;
+    [FormerlySerializedAs("WeaponIconUI")] public Sprite weaponIconUI;
+    [FormerlySerializedAs("Wpn_GO")] public GameObject wpnGo;
     //public GameObject Arms_GO;
-    public enum WeaponType { Assault, SMG, LMG, Sniper, Shotgun, Pistol, Melee, Launcher, Special }
+    public enum WeaponType { Assault, Smg, Lmg, Sniper, Shotgun, Pistol, Melee, Launcher, Special }
     public WeaponType weaponType;
     public enum WeaponFireMode { Auto, Semi, Burst, Bolt, Pump, Melee }
     public WeaponFireMode fireMode;
@@ -18,17 +19,17 @@ public class pzg_weapon : ScriptableObject {
     public AudioSource audio;
     public AudioClip fireSound;
     public AudioClip reloadSound;
-    public float SwayAmount;
-    public float SwaySmoothAmount;
-    public float SwayMaxAmount;
+    [FormerlySerializedAs("SwayAmount")] public float swayAmount;
+    [FormerlySerializedAs("SwaySmoothAmount")] public float swaySmoothAmount;
+    [FormerlySerializedAs("SwayMaxAmount")] public float swayMaxAmount;
     public Vector3 adsPos;
 
     [Header("Weapon Stats")]
     public int bulletPerMag;
     public int maxAmmo;
-    public float ReloadTime;
+    [FormerlySerializedAs("ReloadTime")] public float reloadTime;
     public int damage;
-    public float ADSSpeed;
+    [FormerlySerializedAs("ADSSpeed")] public float adsSpeed;
     public float rangeMeters;
     [Tooltip("<1 = Fast, >1 = Slow")]
     public float fireRate;
@@ -50,7 +51,7 @@ public class pzg_weapon : ScriptableObject {
 
     [Header("Buyable")]
     public bool isBuyable;
-    public Sprite WeaponIconBuy;
+    [FormerlySerializedAs("WeaponIconBuy")] public Sprite weaponIconBuy;
     public int pointsToBuyAmmo;
     public int pointsToBuy;
 }

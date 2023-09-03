@@ -1,28 +1,31 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts_.Gameplay.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public struct ActivePerks
 {
-    public int PrkIndex;
+    [FormerlySerializedAs("PrkIndex")] public int prkIndex;
 }
 
-public class Player_Script : MonoBehaviour
+public class PlayerScript : MonoBehaviour
 {
-    [SerializeField]
-    Text DebugTXT;
-    public Player_Movement plymove;
-    public TextMeshProUGUI UI_Alert;
+    [FormerlySerializedAs("DebugTXT")] [SerializeField]
+    Text debugTxt;
+    public PlayerMovement plymove;
+    public CameraMovement camMove;
+    [FormerlySerializedAs("UI_Alert")] public TextMeshProUGUI uiAlert;
     //public GameManager GameManager;
     //public ScoreboardBehaviour scoreboard;
 
-    [Header("Player Properties")]
-    public GameObject GO_Scoreboard;
+    [FormerlySerializedAs("GO_Scoreboard")] [Header("Player Properties")]
+    public GameObject goScoreboard;
     //public GameObject GO_Pause;
     public float health;
 
@@ -30,11 +33,11 @@ public class Player_Script : MonoBehaviour
     public int FPS { get; private set; }
 
     //Points
-    [Header("Points")]
-    public int Points;
-    int pointsPerHit = 10;
+    [FormerlySerializedAs("Points")] [Header("Points")]
+    public int points;
+    int _pointsPerHit = 10;
     // int InicialPoints = 500;
-    public TextMeshProUGUI PointsText;
+    [FormerlySerializedAs("PointsText")] public TextMeshProUGUI pointsText;
 
 
     // Start is called before the first frame update
@@ -43,7 +46,7 @@ public class Player_Script : MonoBehaviour
         //WpnBase = WpnBase.GetComponent<WeaponManager>();
 
         Cursor.lockState = CursorLockMode.Locked;
-        GO_Scoreboard.SetActive(false);
+        goScoreboard.SetActive(false);
         //GO_Pause.SetActive(false);
 
         //PlayerSetup
@@ -51,7 +54,7 @@ public class Player_Script : MonoBehaviour
 
         
         //Points = InicialPoints;
-        PointsText.text = Points.ToString();
+        pointsText.text = points.ToString();
 
         //Perks
 
@@ -76,7 +79,7 @@ public class Player_Script : MonoBehaviour
         //PlayerLvl();
 
         //Points System
-        PointsText.text = Points.ToString();
+        pointsText.text = points.ToString();
 
         //Weapons Systems
         //WeaponProperties();
@@ -95,11 +98,11 @@ public class Player_Script : MonoBehaviour
 
         if (Keyboard.current.tabKey.isPressed /*|| plymove.gp1.selectButton.isPressed*/)
         {
-            GO_Scoreboard.SetActive(true);
+            goScoreboard.SetActive(true);
         }
         else
         {
-            GO_Scoreboard.SetActive(false);
+            goScoreboard.SetActive(false);
         }
     }
     /*void ShowPause()
@@ -167,7 +170,7 @@ public class Player_Script : MonoBehaviour
 
     public void GetPoints()
     {
-        Points += pointsPerHit;
+        points += _pointsPerHit;
     }
     #endregion PlayerProperties
 
@@ -234,21 +237,21 @@ public class Player_Script : MonoBehaviour
 
     void DebugHUD()
     {
-        var x = Input.GetAxis("Horizontal") * Time.deltaTime * plymove.m_speed;
-        var z = Input.GetAxis("Vertical") * Time.deltaTime * plymove.m_speed;
-        var h = Input.GetAxis("Mouse X") * plymove.cam_sens_x;
+        var x = Input.GetAxis("Horizontal") * Time.deltaTime * plymove.walkSpeed;
+        var z = Input.GetAxis("Vertical") * Time.deltaTime * plymove.walkSpeed;
+        var h = Input.GetAxis("Mouse X") * camMove.camSensX;
         FPS = (int)(1f / Time.deltaTime);
 
-        DebugTXT.text = 
+        debugTxt.text = 
             " - " + "FPS: " + FPS + " frames" +
             "\n - " + "Can Jump: " + plymove.isGrounded +
             "\n - " + "Is On Ground: " + /*plymove.isGrounded +*/
-            "\n - " + "Is Moving: " + plymove.isMoving + " @ " + plymove.m_speed + " speed" +
-            "\n - " + "Is Running: " + plymove.isRunning + " @ " + plymove.m_Rspeed + " speed" +
+            "\n - " + "Is Moving: " + plymove.isMoving + " @ " + plymove.walkSpeed + " speed" +
+            "\n - " + "Is Running: " + plymove.isRunning + " @ " + plymove.runningSpeed + " speed" +
             "\n - " + "Is Inverted: " + plymove.isInverted +
             "\n - " + "X Values: " + x +
             " - " + "Z Values: " + z +
             "\n - " + "H Values: " + h +
-            " - " + "V Values: " + plymove.v;
+            " - " + "V Values: " + camMove.v;
     }
 }
