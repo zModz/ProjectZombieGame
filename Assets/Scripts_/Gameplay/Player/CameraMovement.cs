@@ -12,8 +12,6 @@ namespace Scripts_.Gameplay.Player
         public bool isInverted;
         [Header("Camera Attributes")]
         public GameObject cam;
-        private Camera _camera;
-        private CameraMovement _cameraMovement;
         // public Camera weaponCam;
         [FormerlySerializedAs("cam_sens_x")] [Range(0, 100)]
         public int camSensX = 1;
@@ -21,12 +19,6 @@ namespace Scripts_.Gameplay.Player
         public int camSensY = 1;
         public float v;
         public float h;
-
-        private void Awake()
-        {
-            _camera = cam.GetComponent<Camera>();
-            _cameraMovement = cam.GetComponent<CameraMovement>();
-        }
 
         // Start is called before the first frame update
         private void Start()
@@ -38,12 +30,6 @@ namespace Scripts_.Gameplay.Player
         private void Update()
         {
             if (!IsOwner) return;
-
-            if (!_camera.enabled && !_cameraMovement.enabled)
-            {
-                _camera.enabled = true;
-                _cameraMovement.enabled = true;
-            }
 
             CamMove();
         }
