@@ -12,6 +12,7 @@ namespace Scripts_.Gameplay.Player
 
         [Header("Player Attributes")]
         public bool isInverted;
+
         // bool isDown;
         // bool wasDown;
 
@@ -24,20 +25,23 @@ namespace Scripts_.Gameplay.Player
         public Transform groundCheck;
         public LayerMask groundMask;
         private const float GroundDistance = 0.1f;
+
         // float fallMulti = 2.5f;
         // float lowMulti = 2f;
         private Rigidbody _rb;
         public bool isGrounded;
         public bool isMoving;
         public bool isRunning;
-        public enum MovementEnum 
+
+        public enum MovementEnum
         {
             IsStopped,
             IsMoving,
             IsRunning
         }
 
-        [FormerlySerializedAs("MoveEnum")] public MovementEnum moveEnum;
+        [FormerlySerializedAs("MoveEnum")]
+        public MovementEnum moveEnum;
         private Collider[] _childrenColliders;
         private Vector3 _velocity;
 
@@ -46,18 +50,19 @@ namespace Scripts_.Gameplay.Player
 
         [Header("Head Bobbing")]
         public float walkingBobbingSpeed = 14f;
-        public float bobbingAmount = 0.05f; 
+        public float bobbingAmount = 0.05f;
+
         //float defaultPosY = 0;
         //float timer = 0;
 
         private void Awake()
         {
             Cursor.lockState = CursorLockMode.Locked;
-            
+
             _char = GetComponent<CharacterController>();
             _rb = GetComponent<Rigidbody>();
             playerInput = GetComponent<PlayerInput>();
-            
+
             //defaultPosY = transform.localPosition.y;
         }
 
@@ -66,11 +71,11 @@ namespace Scripts_.Gameplay.Player
         {
             runningSpeed = walkSpeed * runMulti; // Calculates running speed by multiplying walkSpeed with a multiplier
             _walkSpeed = walkSpeed; // set a temp variable for walkSpeed
-            
+
             _childrenColliders = GetComponentsInChildren<Collider>();
             foreach (var col in _childrenColliders)
             {
-                // checking if it is our collider, then skip it, 
+                // checking if it is our collider, then skip it,
                 if (col != GetComponent<Collider>())
                 {
                     // if it is not our collider then ignore collision between our collider and childs collider
@@ -82,39 +87,38 @@ namespace Scripts_.Gameplay.Player
         // Update is called once per frame
         private void Update()
         {
-            if (!IsOwner) return;
-        
+            if (!IsOwner)
+                return;
+
             Movement();
         }
 
         private void Movement()
         {
-            if (!IsOwner) return; // Returns if player is not the local player
+            // Returns if player is not the local player
+            if (!IsOwner)
+                return;
 
-            isGrounded = Physics.CheckSphere(groundCheck.position, GroundDistance, groundMask); // Checks if player is touching the ground
-            
-            // ?? this makes the character move ??
-            if(isGrounded && _velocity.y < 0)
-            {
-                _velocity.y = -2f;
-            }
+            // Gravity
+            _velocity.y += -9.81f * Time.deltaTime;
+            _char.Move(_velocity * Time.deltaTime);
+
+            // Checks if player is touching the ground
+            isGrounded = Physics.CheckSphere(groundCheck.position, GroundDistance, groundMask);
 
             // Movement
             var input = playerInput.actions["Move"].ReadValue<Vector2>();
-            var transform1 = transform;
-            var move = transform1.right * input.x + transform1.forward * input.y;
-            Debug.Log(move);
+            var move = transform.right * input.x + transform.forward * input.y;
             _char.Move(move * (walkSpeed * Time.deltaTime));
+
+            // Debugging players movement
+            Debug.Log(move);
 
             // Jump
             if (playerInput.actions["Jump"].WasPressedThisFrame() && isGrounded)
             {
                 _velocity.y = Mathf.Sqrt(jumpHeight * -2f * -9.81f);
             }
-
-            // Gravity
-            _velocity.y += -9.81f * Time.deltaTime;
-            _char.Move(_velocity * Time.deltaTime);
 
             // Sprint
             // TODO: Make sprint better
@@ -130,7 +134,7 @@ namespace Scripts_.Gameplay.Player
                     walkSpeed = _walkSpeed;
                 }
             }
-            
+
             // Enum
             moveEnum = MovementEnum.IsStopped;
             if (move.z != 0 || move.x != 0)
