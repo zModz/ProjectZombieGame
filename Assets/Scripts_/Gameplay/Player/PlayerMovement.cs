@@ -122,7 +122,7 @@ namespace Scripts_.Gameplay.Player
 
             // Sprint
             // TODO: Make sprint better
-            if (move.z > 0)
+            if (input.y > 0)
             {
                 if (playerInput.actions["Sprint"].IsPressed())
                 {
